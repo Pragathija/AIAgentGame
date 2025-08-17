@@ -53,7 +53,7 @@ function drawBoard() {
 
 // --------- Game Logic ---------
 function makeMove(index, source="manual") {
-  if (!gameActive) { speakRandom(["The game's over. Try 'reset' to play again."]); return; }
+  if (!gameActive) { speakRandom(["The game's over. let's reset to play again."]); return; }
   if (board[index]) { speakRandom(["That spot is taken.", "Already occupied. Try a free cell.", "Nope—blocked. Pick another."]); return; }
 
   // Snapshot before the move to judge a 'block'
@@ -68,7 +68,7 @@ function makeMove(index, source="manual") {
 
   if (checkWinner("X")) {
     setStatus("You win! 🎉");
-    speakRandom(["Brilliant! You outplayed me!", "What a finish—well deserved!", "GG! That was sharp."]);
+    speakRandom(["Brilliant! You played well!", "What a finish—well deserved!", "GG! That was sharp."]);
     gameActive = false;
     return;
   }
@@ -162,7 +162,7 @@ function resetGame() {
   setStatus("Your turn! Say “suggest” for help.");
   speakRandom([
     "New game. Your move first—good luck!",
-    "Fresh board! Start strong.",
+    "Fresh board! Let's start.",
     "Let’s go again—place your first mark."
   ]);
 }
@@ -250,15 +250,13 @@ async function getAISuggestion() {
     });
     const data = await response.json();
     if (typeof data.move === "number") {
-      alert(`AI Suggests: Place at cell ${data.move + 1}${data.reason ? " — " + data.reason : ""}`);
       speak(`I suggest placing at ${data.move + 1}. ${data.reason || ""}`);
     } else {
       alert("No suggestion available.");
     }
   } catch (e) {
     const move = findBestMove();
-    alert(`Local Hint: Place at ${move + 1}`);
-    speak(`Hint: try cell ${move + 1}.`);
+    speak(` Place your move at ${move + 1}. may help you to win`);
   }
 }
 
@@ -275,19 +273,17 @@ function startVoiceControl() {
     const command = event.results[0][0].transcript.toLowerCase();
     console.log("Voice Command:", command);
 
-    if (command.includes("start")) {
+    if (command.includes("Let's start the game") || command.includes("Let's begin the game")) {
       resetGame();
-      speakRandom(["Game started. Your move!", "Let’s begin—place anywhere."]);
-    } else if (command.includes("suggest")) {
+      speakRandom(["Game started. Make Your move!", "Let’s begin—place anywhere."]);
+    } else if (command.includes("suggest my next move") || command.includes("help me with this move")) {
       getAISuggestion();
-    } else if (command.includes("reset") || command.includes("restart")) {
+    } else if (command.includes("reset the game") || command.includes("restart the game")) {
       resetGame();
-    } else if (command.includes("place at")) {
-      const number = parseInt(command.replace(/\D/g, ""));
-      if (!isNaN(number) && number >= 1 && number <= 9) makeMove(number - 1, "voice");
-      else speak("Say a number between one and nine.");
+    } else if (command.includes("Where to place my next move")) {
+       speak("Place your first move at center");
     } else {
-      speak("Try saying: place at five, suggest, or reset.");
+      speak("Sure, Make your First move");
     }
   };
   recognition.onerror = (e) => console.warn("Speech error:", e.error);

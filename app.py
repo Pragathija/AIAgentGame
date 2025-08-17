@@ -1,5 +1,25 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from voice_agent import process_voice
+
+# in app.py
+from voice_agent import start_voice_agent
+
+
+def start_voice_agent():
+    import speech_recognition as sr
+    import pyttsx3
+    
+    r = sr.Recognizer()
+    engine = pyttsx3.init()
+    with sr.Microphone() as source:
+        print("Say something...")
+        audio = r.listen(source)
+        text = r.recognize_google(audio)
+        print("You said:", text)
+        engine.say("You said " + text)
+        engine.runAndWait()
+
 
 try:
     import speech_recognition as sr
@@ -73,6 +93,23 @@ def suggest_move(board):
     empties = empty_indices(board)
     return (empties[0] if empties else -1), ""
 
+@app.route("/voice", methods=["POST"])
+def handle_voice():
+    data = request.get_json()
+    user_text = data.get("message", "")
+    
+    # process the text with your AI voice agent
+    response_text = process_voice(user_text)
+    
+    return jsonify({"response": response_text})
+
+@app.route("/voice", methods=["POST"])
+def handle_voice():
+    data = request.get_json()
+    user_text = data.get("message", "")
+    response_text = process_voice(user_text)
+    return jsonify({"response": response_text})
+
 @app.route("/suggest", methods=["POST"])
 def suggest():
     data = request.get_json(force=True)
@@ -107,3 +144,4 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(debug=True)

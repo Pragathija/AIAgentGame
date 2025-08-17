@@ -3,23 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tic Tac Toe with Conversational AI</title>
+  <title>Tic Tac Toe with AI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Tic-Tac-Toe <span style="font-size:.6em;opacity:.8">with AI Voice Buddy</span></h1>
+    <h1>Tic-Tac-Toe</h1>
     <div id="board" class="board"></div>
     <div class="status" id="status"></div>
     <div class="controls">
-      <button onclick="resetGame()">↻ Restart Game</button>
-      <button onclick="startVoiceControl()">🎤 Start Voice Control</button>
-      <button onclick="getAISuggestion()">💡 Get AI Suggestion</button>
-      <button onclick="toggleAgent()">🗣️ Agent On/Off</button>
-      <label class="chk">
-        <input type="checkbox" id="chatter" checked onchange="toggleChatter(this.checked)" />
-        Enable compliments & chatter
-      </label>
+      <button onclick="resetGame()">↻ </button>
+      <button onclick="startVoiceControl()">🎤</button>
+      <button onclick="getAISuggestion()">💡</button>
+      <button onclick="toggleAgent()">🗣️ AI Mode</button>
     </div>
   </div>
 

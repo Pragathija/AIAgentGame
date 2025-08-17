@@ -1,7 +1,7 @@
 body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   text-align: center;
-  background: #0d0d12 radial-gradient(circle at 30% 20%, #1a1a25 0%, #0d0d12 60%);
+  background: url('wall-1.jpg');
   min-height: 100vh;
   margin: 0;
   color: #eee;
